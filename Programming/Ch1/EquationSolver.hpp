@@ -22,21 +22,26 @@ public:
         EquationSolver(F), a(a), b(b), eps(eps), delta(delta), Maxiter(Maxiter) {}
     
     double solve() {
+        if (F(a) * F(b) > 0) {
+            throw std::invalid_argument("Function must have opposite signs at endpoints a and b");
+        }
+
         int iter = 0;
         double h=b-a;
         double u=F(a);
-        while (h>delta && iter<Maxiter) {
+        while (std::abs(h)>delta && iter<Maxiter) {
             h/=2;
             double c=a+h;
             double v=F(c);
-            if(F(c)<eps) return c;
+            if (std::abs(v) < eps) return c;
             if (u*v<=0) b=c;
             else {
-                a=c, u=v;
+                a=c;
+                u=v;
             }
             iter++;
         }
-        return a+h;
+        return (a+b)/2;
     }
 };
 

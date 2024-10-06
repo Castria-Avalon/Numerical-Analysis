@@ -10,7 +10,6 @@
 #include <map>
 #include <vector>
 #include <stack>
-#include <stdexcept>
 
 // Math function class Function
 class Function
@@ -37,21 +36,29 @@ private:
     std::string replaceX(double x)
     {
         std::ostringstream oss;
-        for (char ch : expression)
+        size_t i = 0;
+        while (i < expression.size())
         {
-            if (ch == 'x')
+            if (expression.substr(i, 3) == "exp")
+            {
+                oss << "exp";
+                i += 3;
+            }
+            else if (expression[i] == 'x')
             {
                 oss << x;
+                i++;
             }
             else
             {
-                oss << ch;
+                oss << expression[i];
+                i++;
             }
         }
         return oss.str();
     }
 
-    //Tokenizer
+    // Tokenizer
     std::vector<std::string> tokenize(const std::string &expr)
     {
         std::vector<std::string> tokens;
@@ -152,7 +159,7 @@ private:
         return 0;
     }
 
-    //Transform infix to postfix
+    // Transform infix to postfix
     std::vector<std::string> toPostfix(const std::vector<std::string> &tokens)
     {
         std::vector<std::string> output;

@@ -11,7 +11,7 @@ int main() {
     Function F2("pow(x,-1)-pow(2,x)");
     Function F3("pow(2,-x)+exp(x)+2*cos(x)-6");
     Function F4("(pow(x,3)+4*pow(x,2)+3*x+5)/(2*pow(x,3)-9*pow(x,2)+18*x-2)");
-    Bisection_Method solver_f1(F1, 0, Pi/2);
+    Bisection_Method solver_f1(F1, 1e-7, Pi/2-1e-7);
     Bisection_Method solver_f2(F2, 0, 1);
     Bisection_Method solver_f3(F3, 1, 3);
     Bisection_Method solver_f4(F4, 0, 4);

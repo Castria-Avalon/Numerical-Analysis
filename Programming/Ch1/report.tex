@@ -1,0 +1,146 @@
+\documentclass[a4paper]{article}
+\usepackage[affil-it]{authblk}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{forest}
+\usepackage[backend=bibtex,style=numeric]{biblatex}
+
+
+\usepackage{geometry}
+\geometry{margin=1.5cm, vmargin={0pt,1cm}}
+\setlength{\topmargin}{-1cm}
+\setlength{\paperheight}{29.7cm}
+\setlength{\textheight}{25.3cm}
+
+\addbibresource{citation.bib}
+
+\begin{document}
+\forestset{
+  folder/.style={
+    for tree={
+      grow=east,
+      edge={->},
+      l sep=15pt,
+      if n children=0{tier=word}{}
+    },
+    delay={where content={}{shape=folder,draw,minimum height=3ex}{}, 
+           where content={}{tier=parent}{}, 
+           if n children=0{}}
+  }
+}
+\nocite{*}
+% =================================================
+\title{Numerical Analysis Programming Report 1}
+
+\author{Wu Jinhan 3220102328
+  \thanks{Electronic address: \texttt{3220102328@zju.edu.cn}}}
+\affil{(Information and Computing Science 2201), Zhejiang University }
+
+
+\date{Due time: \today}
+
+\maketitle
+
+
+
+% ============================================
+\section*{A. Programming Design}
+
+\begin{forest}
+  for tree={
+    grow=east, 
+    edge={->}, 
+    parent anchor=east,
+    child anchor=west,
+    align=center,
+    l sep+=10pt, % 调整节点间距
+    anchor=west
+  }
+  [Ch1
+    [Header File 
+      [SciCal.hpp
+        [class: Function]
+        [testSciCal.cpp]
+      ] 
+      [EquationSolver.hpp
+        [Abstract class: EquationSolver
+            [class: Bisection\_method]
+            [class: Newton\_method]
+            [class: Secant\_method]
+        ]
+      ]
+    ]
+    [Solutions 
+      [B.cpp]
+      [C.cpp]
+      [D.cpp]
+      [E.cpp]
+      [F.cpp]
+    ]
+  ]
+\end{forest}
+\subsection*{Header File}
+\begin{itemize}
+    \item \textbf{SciCal.hpp}: To define the class \textbf{Function} and its member functions. 
+    Main function is to calculate the value of the function at a given point and the derivative of the function at a given point.
+    It also includes a series of functions to assist in calculating function values. 
+    The core idea is to input and store the expression, and during computation, replace 'x' with the calculated value. 
+    This is achieved by using a tokenizer and postfix expression to compute the standard input function.
+    A \texttt{testSciCal.cpp} file is provided to verify whether instances of the classes can be successfully constructed and compute the corresponding function values.
+    \item \textbf{Equation.hpp}: Derive three classes, \texttt{Bisection\_method}, \texttt{Newton\_method}, and \texttt{Secant\_method}, from the abstract class \texttt{EquationSolver} to solve for the zeroes of a function.
+\end{itemize}
+\subsection*{Solutions for Problems}
+\begin{itemize}
+    \item All \texttt{.cpp} files should correspond to the problem statement and output the solution through the standard output stream.
+\end{itemize}
+
+\section*{B}
+
+Simply create instances and call the functions directly to perform the computations.
+
+\section*{C}
+
+Similarly, after calling the function, it can be easily observed that two roots are close to 4.5 and 7.7, which meets the conditions of the Newton method.
+
+\section*{D}
+
+By observing the results, it is easy to notice that when the initial values differ, functions one and two yield different solutions. 
+This is mainly due to the multiple solutions and convexity/concavity of the functions, which significantly affect the slope of the secant. 
+As a result, the solution may either not converge or shift away from the true root.
+
+\section*{E}
+
+By invoking the three methods and observing the results, it can be concluded that the root errors obtained from all three methods are minimal, approximately 0.16502. 
+However, the latter two methods (Newton's method and the secant method) require far fewer iterations compared to the bisection method.
+
+\section*{F}
+
+When attempting to call the function to solve this problem, some issues occurred. 
+Specifically, using the initial value of \( PI = acos(-1) \) significantly impacted the calculation results. 
+However, when directly using the radian value 0.57596, a relatively correct result was obtained. 
+This suggests that the choice of initial value is crucial for the accuracy of the equation solver.
+The suspected reason for this issue is the floating-point calculation error or the impact of the program environment during the function call, which may affect the results. 
+Floating-point precision can lead to small discrepancies in the values of constants like \( PI \), and the way the program handles these computations might introduce slight errors, leading to different outcomes. 
+This also suggests that in certain scenarios, manually specifying radian values could mitigate such precision issues.
+
+\subsection*{(1)}
+Based on the result being close to 0.57596, it can be verified that \(\alpha\) is approximately equal to 33 degrees. This conversion comes from the relationship between radians and degrees, where \( \alpha = 0.57596 \, \text{radians} \times \frac{180}{\pi} \approx 33 \, \text{degrees} \).
+
+\subsection*{(2)}
+The result of the second problem is 0.578907, which is very close to the result of the first problem. Therefore, it can be concluded that \(\alpha\) is still approximately 33 degrees, and this result aligns with the initial conditions used in Newton's method. This consistency further confirms the accuracy of the approach and the appropriateness of the chosen initial value for solving the equation.
+
+\subsection*{(3)}
+In this problem, three different initial values were chosen. The results obtained from \( \pi \) and 5 were consistent, converging to 0.578906. However, when the initial value was set to 6, significant fluctuations occurred. The potential reasons for this are as follows:
+\begin{itemize}
+    \item \textbf{Function Behavior}: At different points, the function's slope or curvature (concavity/convexity) may influence the calculation. For instance, if the function's derivative is small or changes rapidly near the initial guess, the iterative method may struggle to find the root, leading to oscillations or slow convergence.
+    \item \textbf{Multiple Roots Between Initial Guesses}:
+    The Secant Method may skip over the root near 0.57596 and converge to a root closer to 6 radians.
+\end{itemize}
+
+This suggests that careful selection of initial values is important to ensure convergence, especially when using methods like secant.
+
+% ===============================================
+\subsection*{ \center{\normalsize {Acknowledgement}} }
+\printbibliography
+
+\end{document}
