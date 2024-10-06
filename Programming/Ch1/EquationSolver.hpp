@@ -17,6 +17,7 @@ private:
     double eps, delta;
     int Maxiter;
 public:
+    // Adjust maxiter to 100
     Bisection_Method(const Function &F, double a, double b, 
         double eps = 1e-7, double delta = 1e-6, int Maxiter = 100) :
         EquationSolver(F), a(a), b(b), eps(eps), delta(delta), Maxiter(Maxiter) {}
