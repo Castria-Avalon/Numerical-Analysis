@@ -1,21 +1,25 @@
 CXX = g++
 CXXFLAGS = -std=c++11 -Wall
 SRC = B.cpp C.cpp D.cpp E.cpp F.cpp
-OBJ = $(SRC:.cpp=.o)
-TARGET = main
+TARGETS = $(SRC:.cpp=)
+OUTPUT_DIR = output
 
 .PHONY: all clean run
 
-all: $(TARGET)
+all: $(OUTPUT_DIR) $(addprefix $(OUTPUT_DIR)/, $(TARGETS))
 
-$(TARGET): $(OBJ)
-	$(CXX) $(CXXFLAGS) -o $(TARGET) $(OBJ)
+$(OUTPUT_DIR):
+	mkdir -p $(OUTPUT_DIR)
 
-%.o: %.cpp
-	$(CXX) $(CXXFLAGS) -c $< -o $@
+$(OUTPUT_DIR)/%: %.cpp
+	$(CXX) $(CXXFLAGS) $< -o $@
 
-run: $(TARGET)
-	./$(TARGET)
+run: all
+	@for target in $(TARGETS); do \
+		echo "Running $(OUTPUT_DIR)/$$target:"; \
+		./$(OUTPUT_DIR)/$$target; \
+	done
 
 clean:
-	rm -f $(OBJ) $(TARGET)
+	rm -f $(OUTPUT_DIR)/* *.o
+	rmdir $(OUTPUT_DIR)
