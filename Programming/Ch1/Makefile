@@ -25,8 +25,10 @@ report: report.tex
 	@bibtex report.aux
 	@pdflatex report.tex
 	@pdflatex report.tex
-	@rm -f *.aux *.log *.out *.synctex.gz *.toc *.bbl *.run.xml *.blg
+	@rm -f *.aux *.log *.out *.synctex.gz *.toc *.bbl *.run.xml *.blg report-blx.bib
 
 clean:
 	rm -f $(OUTPUT_DIR)/* *.o
+	rm -f report.pdf *.aux *.log *.out *.synctex.gz *.toc *.bbl *.run.xml *.blg report-blx.bib
 	rmdir $(OUTPUT_DIR)
+	
