@@ -36,7 +36,6 @@ private:
 
 };
 
-
 double chebyshev_point(double a, double b, int n, int i);
 
 void save_interpolated_data(const std::vector<double>& x_vals, const std::vector<double>& y_vals, const std::string& filename);
