@@ -15,6 +15,7 @@ int main(){
     std::vector<double> y={0,75,225,77,383,80,623,74,993,72};
     HermiteInterpolation hermite(x,y);
     
+    std::cout << "=================Answer of Problem D=================" << std::endl;
     std::cout << "When t=10s, the car's position:" << hermite.interpolate(10) << std::endl;
     std::cout << "When t=10s, the car's speed:" << derivative(10, hermite) << std::endl;
 

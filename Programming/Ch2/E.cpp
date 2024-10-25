@@ -25,6 +25,7 @@ int main(){
     save_interpolated_data(x_vals, y2_vals, "AverageWeight2.csv");
     bool die1=false,die2=false;
     double x_val=29;
+    std::cout << "=================Answer of Problem E=================" << std::endl;
     while((!die1 || !die2) && x_val<=44){
         double y1_val=newton1.interpolate(x_val);
         double y2_val=newton2.interpolate(x_val);
