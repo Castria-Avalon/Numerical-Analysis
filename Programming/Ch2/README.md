@@ -18,7 +18,7 @@
 
 **Note**: 
 
-Do not delete any CSV files arbitrarily, as it will affect the generation of images. After running `make figure_clean`, all CSV files will be automatically deleted after the images are generated. Please run `make run` to regenerate the CSV files. If file deletion is unnecessary, please run `make figure`.
+Do not delete any CSV files arbitrarily, as it will affect the generation of images. After running `make figure_clean`, all CSV files will be automatically deleted after the images are generated. Please run `make run` to regenerate the CSV files. If file deletion is not required, please run `make figure`.
 
 
 

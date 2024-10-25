@@ -1,25 +1,48 @@
-CXX = g++
-CXXFLAGS = -std=c++11 -Wall
-SRC = B.cpp C.cpp D.cpp E.cpp F.cpp
-TARGETS = $(SRC:.cpp=)
-OUTPUT_DIR = output
+output_dir = output
+report_file = report.tex
+cpp_sources = B_and_C.cpp D.cpp E.cpp F.cpp
+cpp_executables = $(addprefix $(output_dir)/, $(basename $(cpp_sources)))
+python_scripts = BC_plot.py E_plot.py F_plot.py
 
-.PHONY: all clean run report
+.PHONY: all compile run figure_clean figure report clean
 
-all: $(OUTPUT_DIR) $(addprefix $(OUTPUT_DIR)/, $(TARGETS))
+# Compile all .cpp files and store the .exe files in the output directory
+compile: $(cpp_executables)
 
-$(OUTPUT_DIR):
-	mkdir -p $(OUTPUT_DIR)
+$(output_dir)/%: %.cpp
+	@mkdir -p $(output_dir)
+	g++ $< Interpolation.cpp -o $@
 
-$(OUTPUT_DIR)/%: %.cpp
-	$(CXX) $(CXXFLAGS) $< -o $@
-
-run: all
-	@for target in $(TARGETS); do \
-		echo "Running $(OUTPUT_DIR)/$$target:"; \
-		./$(OUTPUT_DIR)/$$target; \
+# Compile and run all programs
+run: compile
+	@for exe in $(cpp_executables); do \
+		echo "Running $$exe..."; \
+		./$$exe; \
 	done
 
+# Run the code to obtain all the fitted images and delete all the CSV files
+figure_clean: figure
+	@rm -f *.csv
+
+# Run the code to obtain all the fitted images
+figure: $(python_scripts)
+	@echo "Running all Python scripts simultaneously..."
+	@python3 BC_plot.py & python3 E_plot.py & python3 F_plot.py & wait
+
+
+# Generate the graph for problem B and C
+figure_B_C: BC_plot.py
+	python3 BC_plot.py
+
+# Generate the graph for problem E
+figure_E: E_plot.py
+	python3 E_plot.py
+
+# Generate the graph for problem F
+figure_F: F_plot.py
+	python3 F_plot.py
+
+# Compile the .tex file to generate a report
 report: report.tex
 	@pdflatex report.tex
 	@bibtex report.aux
@@ -27,8 +50,6 @@ report: report.tex
 	@pdflatex report.tex
 	@rm -f *.aux *.log *.out *.synctex.gz *.toc *.bbl *.run.xml *.blg report-blx.bib
 
+# Remove all generated files
 clean:
-	rm -f $(OUTPUT_DIR)/* *.o
-	rm -f report.pdf *.aux *.log *.out *.synctex.gz *.toc *.bbl *.run.xml *.blg report-blx.bib
-	rmdir $(OUTPUT_DIR)
-	
+	@rm -rf $(output_dir) *.aux *.log report.pdf *.csv

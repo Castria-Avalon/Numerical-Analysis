@@ -12,16 +12,6 @@ double function2(double x){
     return 1/(1 + 25*x*x);
 }
 
-void save_interpolated_data(const std::vector<double>& x_vals, const std::vector<double>& y_vals, const std::string& filename) {
-    std::ofstream file(filename);
-    if (file.is_open()) {
-        for (size_t i = 0; i < x_vals.size(); ++i) {
-            file << x_vals[i] << "," << y_vals[i] << "\n";  // Writing data as CSV
-        }
-        file.close();
-    }
-}
-
 int main(){
     //Code for Problem B
     std::vector<int> n = {2, 4, 6, 8};
